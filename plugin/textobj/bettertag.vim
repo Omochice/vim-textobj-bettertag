@@ -9,7 +9,7 @@ set cpo&vim
 
 call textobj#user#plugin('bettertag', {
       \ '-': {
-      \ 'select-i': [], 'select-i-function': 'textobj#better_tag#inner',
+      \ 'select-i': [], 'select-i-function': 'textobj#bettertag#inner',
       \ },
       \ })
 
