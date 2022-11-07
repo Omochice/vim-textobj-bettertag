@@ -2,7 +2,6 @@ if get(g:, 'loaded_textobj_better_tag', v:false)
   finish
 endif
 let g:loaded_textobj_better_tag = v:true
-echomsg 'debug'
 
 let s:save_cpo = &cpo
 set cpo&vim
