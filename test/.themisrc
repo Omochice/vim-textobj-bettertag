@@ -1,1 +1,9 @@
+set encoding=utf-8
+
 call themis#helper('deps').git('kana/vim-textobj-user')
+call themis#option('recursive', v:true)
+
+if $THEMIS_PROFILE !=# ''
+  execute 'profile' 'start' $THEMIS_PROFILE
+  profile! file ./autoload/textobj/bettertag.vim
+endif
