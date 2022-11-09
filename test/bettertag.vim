@@ -70,3 +70,21 @@ function! s:suite.__positive_visual__() abort
     call assert_equal(getreg(v:register), l:save_reg)
   endfunction
 endfunction
+
+function! s:suite.__negative__() abort
+  let l:out_of_tag = themis#suite('If cursor is out of tag, should not copy anything')
+  function! l:out_of_tag.test() abort
+    call setreg(v:register, 'this should be saved')
+    let l:save_reg = getreg(v:register)
+    let l:lines = [
+          \   '<div>',
+          \   '  sample',
+          \   '</div>',
+          \   '',
+          \   '',
+          \ ]
+    normal! G
+    execute 'normal' "y\<Plug>(textobj-bettertag-i)"
+    call assert_equal(l:save_reg, getreg(v:register))
+  endfunction
+endfunction
