@@ -33,7 +33,7 @@ function! s:suite.__positive_normal__() abort
     call cursor(1, 6)
     execute 'normal' "y\<Plug>(textobj-bettertag-i)"
     let l:save_reg = getreg(v:register)
-    normal yit
+    normal! yit
     call assert_equal(getreg(v:register), l:save_reg)
   endfunction
 endfunction
@@ -53,7 +53,7 @@ function! s:suite.__positive_visual__() abort
     call cursor(2, 1)
     " NOTE: FIXME: "v\<Plug>(textobj-bettertag-i)y" not work well
     execute 'normal' "v\<Plug>(textobj-bettertag-i)"
-    normal y
+    normal! y
     call assert_equal(l:lines[1] .. "\n", getreg(v:register))
   endfunction
 
@@ -64,9 +64,9 @@ function! s:suite.__positive_visual__() abort
     call cursor(1, 6)
     " NOTE: FIXME: "v\<Plug>(textobj-bettertag-i)y" not work well
     execute 'normal' "v\<Plug>(textobj-bettertag-i)"
-    normal y
+    normal! y
     let l:save_reg = getreg(v:register)
-    normal vity
+    normal! vity
     call assert_equal(getreg(v:register), l:save_reg)
   endfunction
 endfunction
