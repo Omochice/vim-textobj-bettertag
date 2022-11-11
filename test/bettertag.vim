@@ -69,6 +69,41 @@ function! s:suite.__positive_visual__() abort
     normal! vity
     call assert_equal(getreg(v:register), l:save_reg)
   endfunction
+
+  let l:unformated_outer = themis#suite('If multple tag starts are shown at one line, select only inner out of tag')
+  function! l:unformated_outer.test() abort
+    let l:lines = [
+          \ '<div><div id="foo">',
+          \ '    sample',
+          \ '  </div>',
+          \ '',
+          \ '</div>',
+          \ ]
+    call setline(1, l:lines)
+    call cursor(4, 1)
+
+    execute 'normal' "y\<Plug>(textobj-bettertag-i)"
+     let l:expecteds = (['<div id="foo">'] + l:lines[1:3])
+           \ ->join("\n")
+           \ .. "\n"
+     call assert_equal(l:expecteds, getreg(v:register))
+  endfunction
+
+  let l:unformated_inner = themis#suite('If multple tag starts are shown at one line, select only inner out of tag')
+  function! l:unformated_inner.test() abort
+    let l:lines = [
+          \ '<div><div id="foo">',
+          \ '    sample',
+          \ '  </div>',
+          \ '',
+          \ '</div>',
+          \ ]
+    call setline(1, l:lines)
+    call cursor(2, 1)
+
+    execute 'normal' "y\<Plug>(textobj-bettertag-i)"
+     call assert_equal(l:lines[1] .. "\n", getreg(v:register))
+  endfunction
 endfunction
 
 function! s:suite.__negative__() abort
