@@ -39,7 +39,7 @@ jobs:
         run: |
           ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
       - name: setup python
-        uses: actions/setup-python@v4.7.0
+        uses: actions/setup-python@v4.7.1
         with:
           python-version: '3.10'
       - name: collect coverage
