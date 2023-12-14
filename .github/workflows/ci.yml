@@ -57,7 +57,7 @@ jobs:
         run: |
           octocov badge coverage --out ${{ github.workspace }}/badge-${{ runner.os }}-$(test "${{ matrix.neovim }}" = "true" && echo "neovim" || echo "vim" )-${{ matrix.version }}.svg
       - name: upload badge to artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: badge*.svg
           if-no-files-found: error
