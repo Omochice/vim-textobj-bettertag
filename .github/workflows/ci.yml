@@ -2,8 +2,6 @@ name: vim-themis
 
 on:
   push:
-    branches:
-      - main
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
@@ -53,24 +51,32 @@ jobs:
         uses: jaxxstorm/action-install-gh-release@v1.12.0
         with:
           repo: k1LoW/octocov
+      - name: create filename
+        id: filename
+        run: echo "filename=badge-${{ runner.os }}-$(test \"${{ matrix.neovim }}\" = \"true\" && echo neovim || echo vim )-${{ matrix.version }}.svg" >> "$GITHUB_OUTPUT"
       - name: make covarage badge
         run: |
-          octocov badge coverage --out ${{ github.workspace }}/badge-${{ runner.os }}-$(test "${{ matrix.neovim }}" = "true" && echo "neovim" || echo "vim" )-${{ matrix.version }}.svg
+          octocov badge coverage --out ${{ github.workspace }}/${{ steps.filename.outputs.filename }}
       - name: upload badge to artifact
         uses: actions/upload-artifact@v4
         with:
-          path: badge*.svg
+          path: ${{ steps.filename.outputs.filename }}
+          name: ${{ steps.filename.outputs.filename }}
           if-no-files-found: error
 
   upload-coverage-badge:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/main')
     needs: themis
     steps:
       - name: download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: artifact
-          path: docs
+          pattern: "*.svg"
+      - name: move them into docs
+        run: |
+          mkdir docs
+          mv *.svg docs/
       - name: upload badge to artifact
         uses: actions/upload-pages-artifact@v2
         with:
@@ -78,6 +84,7 @@ jobs:
 
   deploy-to-github-pages:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/main')
     needs: upload-coverage-badge
     permissions:
       pages: write
