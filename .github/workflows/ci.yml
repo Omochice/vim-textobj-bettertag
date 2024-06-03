@@ -67,7 +67,6 @@ jobs:
 
   upload-coverage-badge:
     runs-on: ubuntu-latest
-    if: github.ref == "refs/heads/main"
     needs: themis
     steps:
       - name: download artifacts
