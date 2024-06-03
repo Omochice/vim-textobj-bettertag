@@ -85,7 +85,7 @@ jobs:
         with:
           version: latest
       - name: merge coverage
-        run: pnpm dlx cobertura@1.0.4 -o coverage.xml $(ls *.xml | sed 's/^\\(\\(coverage\\)-\(.*\\)\\.xml$/\\3=\\1/g')
+        run: pnpm dlx cobertura@1.0.4 -o coverage.xml $(ls *.xml | sed 's/^\\(\\(coverage\\)-\\(.*\\)\\.xml$/\\3=\\1/g')
       - name: show
         run: cat coverage.xml
 
