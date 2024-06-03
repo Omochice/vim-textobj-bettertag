@@ -57,7 +57,6 @@ jobs:
       - name: make covarage badge
         run: |
           octocov badge coverage --out ${{ github.workspace }}/${{ steps.filename.outputs.filename }}
-      - run: ls
       - name: upload badge to artifact
         uses: actions/upload-artifact@v4
         with:
