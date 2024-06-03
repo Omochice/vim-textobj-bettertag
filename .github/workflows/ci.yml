@@ -74,7 +74,7 @@ jobs:
         with:
           name: "*.svg"
       - name: upload badge to artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v2
         with:
           path: docs
 
