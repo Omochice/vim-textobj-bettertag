@@ -2,6 +2,8 @@ name: vim-themis
 
 on:
   push:
+    branches:
+      - "main"
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
