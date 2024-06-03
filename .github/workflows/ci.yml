@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
+  pull_request:
 
 jobs:
   themis:
