@@ -5,7 +5,6 @@ on:
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
-  pull_request:
 
 jobs:
   themis:
@@ -48,7 +47,6 @@ jobs:
           pip install covimerage==0.2.2
           covimerage write_coverage "${THEMIS_PROFILE}"
           covimerage xml
-      # - uses: k1LoW/octocov-action@5213913fe329368ab9dafa16f18f4f3cce1062f0 # v1.3.0
       - name: create filename
         id: filename
         run: echo "filename=${{ runner.os }}-$(test \"${{ matrix.neovim }}\" = \"true\" && echo neovim || echo vim )-${{ matrix.version }}" >> "$GITHUB_OUTPUT"
