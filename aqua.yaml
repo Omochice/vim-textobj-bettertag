@@ -1,0 +1,15 @@
+---
+# aqua - Declarative CLI Version Manager
+# https://aquaproj.github.io/
+# checksum:
+#   enabled: true
+#   require_checksum: true
+#   supported_envs:
+#   - all
+registries:
+- type: standard
+  ref: v4.188.0 # renovate: depName=aquaproj/aqua-registry
+packages:
+- name: k1LoW/octocov@v0.60.0
+- name: astral-sh/rye@0.34.0
+- name: astral-sh/uv@0.2.5
