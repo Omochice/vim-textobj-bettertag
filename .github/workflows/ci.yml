@@ -2,8 +2,6 @@ name: vim-themis
 
 on:
   push:
-    branches:
-      - main
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
@@ -56,6 +54,7 @@ jobs:
       - name: make covarage badge
         run: |
           octocov badge coverage --out ${{ github.workspace }}/badge-${{ runner.os }}-$(test "${{ matrix.neovim }}" = "true" && echo "neovim" || echo "vim" )-${{ matrix.version }}.svg
+      - run: ls
       - name: upload badge to artifact
         uses: actions/upload-artifact@v4
         with:
