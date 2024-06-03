@@ -2,8 +2,6 @@ name: vim-themis
 
 on:
   push:
-    branches:
-      - "main"
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
@@ -60,6 +58,7 @@ jobs:
         run: |
           octocov badge coverage --out ${{ github.workspace }}/${{ steps.filename.outputs.filename }}
       - name: upload badge to artifact
+        if: github.ref == "refs/heads/main"
         uses: actions/upload-artifact@v4
         with:
           path: ${{ steps.filename.outputs.filename }}
@@ -68,6 +67,7 @@ jobs:
 
   upload-coverage-badge:
     runs-on: ubuntu-latest
+    if: github.ref == "refs/heads/main"
     needs: themis
     steps:
       - name: download artifacts
@@ -85,6 +85,7 @@ jobs:
 
   deploy-to-github-pages:
     runs-on: ubuntu-latest
+    if: github.ref == "refs/heads/main"
     needs: upload-coverage-badge
     permissions:
       pages: write
