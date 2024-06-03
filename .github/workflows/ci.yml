@@ -47,10 +47,7 @@ jobs:
           pip install covimerage
           covimerage write_coverage "${THEMIS_PROFILE}"
           covimerage xml
-      - name: install octocov
-        uses: jaxxstorm/action-install-gh-release@v1.12.0
-        with:
-          repo: k1LoW/octocov
+      - uses: k1LoW/octocov-action@v1
       - name: create filename
         id: filename
         run: echo "filename=badge-${{ runner.os }}-$(test \"${{ matrix.neovim }}\" = \"true\" && echo neovim || echo vim )-${{ matrix.version }}.svg" >> "$GITHUB_OUTPUT"
