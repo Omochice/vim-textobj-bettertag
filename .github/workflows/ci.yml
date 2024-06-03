@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
+  pull_request:
 
 jobs:
   themis:
@@ -50,14 +51,14 @@ jobs:
       - uses: k1LoW/octocov-action@5213913fe329368ab9dafa16f18f4f3cce1062f0 # v1.3.0
       - name: create filename
         id: filename
-        run: echo "filename=badge-${{ runner.os }}-$(test \"${{ matrix.neovim }}\" = \"true\" && echo neovim || echo vim )-${{ matrix.version }}.svg" >> "$GITHUB_OUTPUT"
+        run: echo "filename=badge-${{ runner.os }}-$(test \"${{ matrix.neovim }}\" = \"true\" && echo neovim || echo vim )-${{ matrix.version }}" >> "$GITHUB_OUTPUT"
       - name: make covarage badge
         run: |
-          octocov badge coverage --out ${{ github.workspace }}/${{ steps.filename.outputs.filename }}
+          octocov badge coverage --out ${{ github.workspace }}/${{ steps.filename.outputs.filename }}.svg
       - name: upload badge to artifact
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         with:
-          path: ${{ steps.filename.outputs.filename }}
+          path: ${{ steps.filename.outputs.filename }}.svg
           name: ${{ steps.filename.outputs.filename }}
           if-no-files-found: error
 
@@ -69,11 +70,12 @@ jobs:
       - name: download artifacts
         uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
         with:
-          pattern: "*.svg"
+          pattern: "badge-*"
       - name: move them into docs
         run: |
+          tree
           mkdir docs
-          mv *.svg docs/
+          mv **/*.svg docs/
       - name: upload badge to artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
