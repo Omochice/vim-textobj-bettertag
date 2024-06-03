@@ -80,7 +80,9 @@ jobs:
         with:
           pattern: "coverage-*"
       - name: extract
-        run: mv **/*.xml ./
+        run: |
+          mv **/*.xml ./
+          tree
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
