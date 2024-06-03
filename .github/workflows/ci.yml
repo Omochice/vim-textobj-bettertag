@@ -37,16 +37,17 @@ jobs:
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
         run: |
           ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
-      - uses: aquaproj/aqua-installer@6ce1f8848ec8e61f14d57bd5d7597057a6dd187c # v3.0.1
+      - name: setup python
+        uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
-          aqua_version: v2.28.1
+          python-version: '3.10'
       - name: collect coverage
         env:
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
         run: |
-          rye sync
-          rye run covimerage write_coverage "${THEMIS_PROFILE}"
-          rye run covimerage xml
+          pip install covimerage
+          covimerage write_coverage "${THEMIS_PROFILE}"
+          covimerage xml
       - uses: k1LoW/octocov-action@5213913fe329368ab9dafa16f18f4f3cce1062f0 # v1.3.0
       - name: create filename
         id: filename
