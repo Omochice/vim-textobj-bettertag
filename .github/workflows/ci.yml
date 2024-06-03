@@ -45,7 +45,7 @@ jobs:
         env:
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
         run: |
-          pip install covimerage=0.2.2
+          pip install covimerage==0.2.2
           covimerage write_coverage "${THEMIS_PROFILE}"
           covimerage xml
       - uses: k1LoW/octocov-action@5213913fe329368ab9dafa16f18f4f3cce1062f0 # v1.3.0
