@@ -1,0 +1,26 @@
+[project]
+name = "vim-textobj-bettertag"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Omochice", email = "mochice.mls.ntl@gmail.com" }
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.12"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "covimerage>=0.2.2",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vim_textobj_bettertag"]
