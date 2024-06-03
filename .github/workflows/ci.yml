@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
+  pull_request:
 
 jobs:
   themis:
@@ -82,16 +83,13 @@ jobs:
       - name: extract
         run: |
           mv **/*.xml ./
-          tree
-          ls *.xml | sed 's/^\(\(coverage\)-\(.*\)\.xml\)$/\3=\1/g'
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: latest
       - name: merge coverage
         run: pnpm dlx cobertura-merge@1.0.4 -o coverage.xml $(ls *.xml | sed 's/^\(\(coverage\)-\(.*\)\.xml\)$/\3=\1/g')
-      - name: show
-        run: cat coverage.xml
+      - uses: k1LoW/octocov-action@v1
 
 
   upload-coverage-badge:
