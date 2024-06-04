@@ -17,8 +17,6 @@ jobs:
         neovim: [false, true]
         version: ["nightly", "stable"]
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       actions: write
     steps:
@@ -40,7 +38,7 @@ jobs:
           THEMIS_VIM: ${{ steps.vim.outputs.executable }}
           THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
         run: |
-          ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
+          "${GITHUB_WORKSPACE}"/vim-themis/bin/themis --reporter dot
       - name: setup python
         uses: actions/setup-python@82c7e631bb3cdc910f68e0081d67478d79c6982d # v5.1.0
         with:
@@ -81,7 +79,7 @@ jobs:
         run: |
           tree
           mkdir docs
-          mv **/*.svg docs/
+          mv ./**/*.svg docs/
       - name: upload badge to artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
