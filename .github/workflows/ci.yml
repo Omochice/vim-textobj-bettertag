@@ -7,6 +7,8 @@ on:
       - "doc/*.txt"
   pull_request:
 
+permissions: {}
+
 jobs:
   themis:
     strategy:
@@ -17,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      actions: write
     steps:
       - name: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
@@ -66,6 +70,8 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/main')
     needs: themis
+    permissions:
+      actions: write
     steps:
       - name: download artifacts
         uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e # v4.1.7
