@@ -27,7 +27,7 @@ jobs:
           path: vim-themis
       - name: setup vim
         id: vim
-        uses: rhysd/action-setup-vim@acff3bc31a82af69a26f90af710926fdab04d00e # v1.3.5
+        uses: rhysd/action-setup-vim@47493751bcbf7a4b12bc9e0c2ddce7aa1e3b69e5 # v1.4.1
         with:
           neovim: ${{ matrix.neovim }}
           version: ${{ matrix.version }}
