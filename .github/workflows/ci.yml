@@ -2,6 +2,8 @@ name: vim-themis
 
 on:
   push:
+    branches:
+      - main
     paths-ignore:
       - "README.md"
       - "doc/*.txt"
@@ -9,41 +11,45 @@ on:
 
 jobs:
   themis:
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
-        neovim: [false, true]
+        type: ["vim", "neovim"]
         version: ["nightly", "stable"]
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
       - name: checkout vim-themis
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           repository: thinca/vim-themis
           path: vim-themis
+          persist-credentials: false
       - name: setup vim
         id: vim
         uses: rhysd/action-setup-vim@19e3dd31a84dbc2c5445d65e9b363f616cab96c1 # v1.6.0
         with:
-          neovim: ${{ matrix.neovim }}
+          neovim: ${{ matrix.type == 'neovim' }}
           version: ${{ matrix.version }}
       - name: Run test with vim-themis
         env:
           THEMIS_VIM: ${{ steps.vim.outputs.executable }}
-          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
+          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.type }}-${{ matrix.version }}.txt
         run: |
-          ${GITHUB_WORKSPACE}/vim-themis/bin/themis --reporter dot
+          "${GITHUB_WORKSPACE}"/vim-themis/bin/themis --reporter dot
       - name: setup python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: '3.14'
       - name: collect coverage
         env:
-          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.neovim }}-${{ matrix.version }}.txt
+          THEMIS_PROFILE: ${{ github.workspace }}/vim-profile-${{ runner.os }}-${{ matrix.type }}-${{ matrix.version }}.txt
         run: |
           pip install covimerage
           covimerage write_coverage "${THEMIS_PROFILE}"
@@ -51,37 +57,37 @@ jobs:
       - uses: k1LoW/octocov-action@73d561f65d59e66899ed5c87e4621a913b5d5c20 # v1.5.0
       - name: create filename
         id: filename
-        run: echo "filename=badge-${{ runner.os }}-$(test \"${{ matrix.neovim }}\" = \"true\" && echo neovim || echo vim )-${{ matrix.version }}" >> "$GITHUB_OUTPUT"
-      - name: make covarage badge
+        run: echo "filename=badge-${{ runner.os }}-${{ matrix.type }}-${{ matrix.version }}"  >> "$GITHUB_OUTPUT"
+      - name: make coverage badge
         run: |
           octocov badge coverage --out ${{ github.workspace }}/${{ steps.filename.outputs.filename }}.svg
       - name: upload badge to artifact
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          path: ${{ steps.filename.outputs.filename }}.svg
-          name: ${{ steps.filename.outputs.filename }}
+          name: badge-${{ runner.os }}-${{ matrix.type }}-${{ matrix.version }}
+          path: badge*.svg
           if-no-files-found: error
 
   upload-coverage-badge:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/main')
     needs: themis
+    permissions: {}
     steps:
       - name: download artifacts
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          pattern: "badge-*"
-      - name: move them into docs
-        run: |
-          tree
-          mkdir docs
-          mv **/*.svg docs/
+          path: docs
+          pattern: badge-*
+          merge-multiple: true
       - name: upload badge to artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: docs
 
   deploy-to-github-pages:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/main')
     needs: upload-coverage-badge
