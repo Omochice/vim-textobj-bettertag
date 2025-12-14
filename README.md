@@ -2,9 +2,9 @@
 
 [![vim-themis](https://github.com/Omochice/vim-textobj-bettertag/actions/workflows/ci.yml/badge.svg)](https://github.com/Omochice/vim-textobj-bettertag/actions/workflows/ci.yml)
 
-This plugin provide mapping: `<Plug>(textobj-bettertag-i)`.
+This plugin provides a mapping: `<Plug>(textobj-bettertag-i)`.
 
-If you place cursor on `|` position.
+If you place the cursor on `|` position.
 
 ```html
 <div>
@@ -18,7 +18,7 @@ When you run `dit` you will get the following:
 <div>|</div>
 ```
 
-If you map this plugin as `onoremap it <Plug>(textobj-bettertag-i)`
+If you map this plugin as `onoremap it <Plug>(textobj-bettertag-i)`, you will get:
 
 ```html
 <div>
