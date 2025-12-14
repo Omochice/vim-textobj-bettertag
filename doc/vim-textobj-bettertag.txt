@@ -1,0 +1,30 @@
+*vim-textobj-bettertag.txt*           tag textobj without beginning of newline
+
+==============================================================================
+vim-textobj-bettertag ~
+                                                       *vim-textobj-bettertag*
+
+- Dependencies	|vim-textobj-bettertag-dependencies|
+- Interface	|vim-textobj-bettertag-interface|
+
+------------------------------------------------------------------------------
+Dependencies ~
+                                          *vim-textobj-bettertag-dependencies*
+This plugin needs:
+
+- https://github.com/kana/vim-textobj-user
+
+------------------------------------------------------------------------------
+Interface                                   *vim-textobj-bettertag-interface*
+
+This plugin provides `<Plug>(textobj-bettertag-i)` only.
+
+You can map this as instead of `it`:
+
+>vim
+	xnoremap it <Plug>(textobj-bettertag-i)
+	onoremap it <Plug>(textobj-bettertag-i)
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:et:fen:fdl=0:
